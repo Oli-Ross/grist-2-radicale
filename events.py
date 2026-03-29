@@ -12,9 +12,11 @@ class Event:
     id: str
 
     @classmethod
-    def from_grist(cls, data) -> "Event":
+    def from_grist(cls, data) -> "Event" | None:
+        if any(x is None for x in [data.summary, data.start, data.end, data.id]):
+            return None
         return Event(
-            summary=data.Wer,
+            summary=data.summary,
             start=datetime.fromtimestamp(data.Start),
             end=datetime.fromtimestamp(data.Ende),
             id=str(data.id),
