@@ -1,4 +1,3 @@
-from env import FLASK_PORT
 import logging
 from flask import Flask, jsonify
 from flask_limiter import Limiter
@@ -58,7 +57,3 @@ def webhook():
         timer = threading.Timer(DEBOUNCE_SECONDS, run_sync)
         timer.start()
     return jsonify({"ok": True})
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=FLASK_PORT)
