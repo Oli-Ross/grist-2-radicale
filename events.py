@@ -1,4 +1,5 @@
 from typing import List, Tuple
+import logging
 import caldav
 from dataclasses import dataclass
 from datetime import datetime
@@ -38,12 +39,13 @@ class Event:
         )
 
     def remove_from_calendar(self, calendar):
-        ev = calendar.search(event=True, uid=self.id)
-        if len(ev) > 1:
-            raise ValueError("Found >1 event with the specified UID: Aborting deletion")
-        if len(ev) == 0:
+        events = calendar.search(event=True, uid=self.id)
+        if len(events) > 1:
+            logging.warning(f"Found multiple events with UID {self.id}, deleting all.")
+        elif len(events) == 0:
             print(f"Found no event with UID {self.id}")
-        ev[0].delete()
+        for e in events:
+            e.delete()
 
 
 def compare_event_lists(
