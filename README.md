@@ -5,11 +5,14 @@ This server takes a [Grist](https://www.getgrist.com/) table with start, end and
 ## Usage (Local)
 
 Run `uv sync` to install dependencies.
+
 Environment variables are loaded from environment or `./.env`.
+
 `sample.env` shows all needed variables (`cp` it to `.env` and modify).
+
 `uv run main.py` starts the Flask server.
 
-The Flask server listens to incoming requests under `/webhook` and will trigger a sync for each received request.
+The Flask server listens to incoming requests under `/` and will trigger a sync for each received request.
 
 ## Usage (docker)
 
