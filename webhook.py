@@ -48,7 +48,7 @@ def health():
     )
 
 
-@app.post("/webhook")
+@app.post("/")
 def webhook():
     global timer
     with lock:
