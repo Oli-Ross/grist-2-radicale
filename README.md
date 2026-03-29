@@ -13,6 +13,8 @@ Environment variables are loaded from environment or `./.env`.
 `uv run main.py` starts the Flask server.
 
 The Flask server listens to incoming requests under `/` and will trigger a sync for each received request.
+There's a hard coded debouncing of 10 seconds on the webhook requests.
+I.e. 10 seconds after the last webhook arrived, the sync will be triggered.
 
 ## Usage (docker)
 
@@ -21,7 +23,5 @@ Run `docker compose up -d` and the webhook will be listening on `127.0.0.1:<FLAS
 
 ## Restrictions
 
-Currently in `events.py/Event.from_grist`, the Grist column names are hardcoded.
-Adapt them according to your table layout.
-There's a hard coded debouncing of 10 seconds on the webhook requests.
-I.e. 10 seconds after the last webhook arrived, the sync will be triggered.
+- Currently in `events.py/Event.from_grist`, the Grist column names are hardcoded. Adapt them according to your table layout.
+- Grist does not send webhook events for delete events, only for `add` and `update`. Thus events will only be deleted once another event has been edited or added. 
