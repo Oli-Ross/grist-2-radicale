@@ -11,8 +11,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 limiter = Limiter(get_remote_address, app=app)
-#  app.config["APPLICATION_ROOT"] = "/webhook"
-#  app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_prefix=1)
+app.config["APPLICATION_ROOT"] = "/webhook"
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1, x_prefix=1)
 
 last_sync = 0.0
 timer = None
@@ -49,7 +49,7 @@ def health():
     )
 
 
-@app.post("/")
+@app.post("/webhook")
 def webhook():
     global timer
     with lock:
