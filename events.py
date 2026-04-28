@@ -77,3 +77,8 @@ def compare_event_lists(
     extra = [x for x in derived_events if x.id not in true_by_id]
 
     return missing, differing, extra
+
+
+def get_current_events(events: List[Event]):
+    now = datetime.now()
+    return [x for x in events if (x.end - now).days > -7]

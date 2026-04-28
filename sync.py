@@ -1,4 +1,4 @@
-from events import compare_event_lists
+from events import get_current_events
 from radicale import get_calendar
 from radicale import get_events as get_events_radicale
 from grist import get_events as get_events_grist
@@ -10,14 +10,8 @@ def sync_grist_to_radicale():
     radicale_events = get_events_radicale(cal)
     grist_events = get_events_grist()
 
-    missing, differing, extra = compare_event_lists(grist_events, radicale_events)
+    for e in radicale_events:
+        e.remove_from_calendar(cal)
 
-    for event in missing:
-        event.add_to_calendar(cal)
-
-    for new, old in differing:
-        old.remove_from_calendar(cal)
-        new.add_to_calendar(cal)
-
-    for event in extra:
-        event.remove_from_calendar(cal)
+    for e in get_current_events(grist_events):
+        e.add_to_calendar(cal)

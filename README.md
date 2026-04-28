@@ -1,6 +1,7 @@
 # grist-2-radicale
 
 This server takes a [Grist](https://www.getgrist.com/) table with start, end and descriptive column and pushes all events to a [Radicale](https://radicale.org/v3.html) calendar.
+Events older than 7 days are not synced to the Radicale server.
 
 ## Usage (Local)
 
