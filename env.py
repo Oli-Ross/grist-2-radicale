@@ -8,7 +8,7 @@ load_dotenv(dotenv_path=dotenv_path)
 RADICALE_URL = os.getenv("RADICALE_URL")
 assert RADICALE_URL is not None
 
-RADICALE_ALT_URL = os.getenv("RADICALE_URL")
+RADICALE_ALT_URL = os.getenv("RADICALE_ALT_URL")
 assert RADICALE_ALT_URL is not None
 
 RADICALE_USER = os.getenv("RADICALE_USER")
