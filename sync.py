@@ -8,23 +8,20 @@ from grist import get_events as get_events_grist
 
 
 def process_events(events: List[Event]) -> List[Event]:
-    events_set = set(events)
-    merged_events = []
-    for e_first, e_second in zip(events, events[1:]):
-        if e_first not in events_set:
-            continue
-        if (e_first.end == e_second.start) and (e_first.summary == e_second.summary):
-            merged_events.append(
-                Event(e_first.summary, e_first.start, e_second.end, e_first.id)
-            )
-            events_set.remove(e_first)
-            events_set.remove(e_second)
+    if not events:
+        return []
+
+    merged = [events[0]]
+
+    for event in events[1:]:
+        previous = merged[-1]
+
+        if previous.end == event.start and previous.summary == event.summary:
+            merged[-1] = Event(previous.summary, previous.start, event.end, previous.id)
         else:
-            merged_events.append(e_first)
-            events_set.remove(e_first)
-    for event in events_set:
-        merged_events.append(event)
-    return merged_events
+            merged.append(event)
+
+    return merged
 
 
 def sync_grist_to_radicale():
