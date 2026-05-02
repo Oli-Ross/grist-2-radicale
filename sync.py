@@ -8,15 +8,16 @@ from grist import get_events as get_events_grist
 
 
 def process_events(events: List[Event]) -> List[Event]:
-    if not events:
-        return []
+    events = sorted(events, key=lambda e: (e.start, e.end, e.summary))
+    merged: List[Event] = []
 
-    merged = [events[0]]
-
-    for event in events[1:]:
-        previous = merged[-1]
-
-        if previous.end == event.start and previous.summary == event.summary:
+    for event in events:
+        if (
+            merged
+            and merged[-1].end == event.start
+            and merged[-1].summary == event.summary
+        ):
+            previous = merged[-1]
             merged[-1] = Event(previous.summary, previous.start, event.end, previous.id)
         else:
             merged.append(event)
