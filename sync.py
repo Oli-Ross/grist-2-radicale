@@ -30,9 +30,11 @@ def sync_grist_to_radicale():
 
     logging.info("Deleting old events.")
     radicale_events = get_events_radicale(cal)
-    radicale_alt_events = get_events_radicale(cal_alt)
     for e in radicale_events:
         e.remove_from_calendar(cal)
+
+    logging.info("Deleting old alt events.")
+    radicale_alt_events = get_events_radicale(cal_alt)
     for e in radicale_alt_events:
         e.remove_from_calendar(cal_alt)
 
