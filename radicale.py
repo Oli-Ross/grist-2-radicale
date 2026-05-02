@@ -10,8 +10,10 @@ def get_calendar(username=RADICALE_USER, url=RADICALE_URL, password=RADICALE_PAS
     with get_davclient(username=username, url=url, password=password) as client:
         principal = client.principal()
         calendars = principal.get_calendars()
-        cal = calendars[0]
-        return cal
+        for cal in calendars:
+            if str(cal.url) == url:
+                return cal
+        return calendars[0]
 
 
 def get_events(cal) -> List[Event]:
