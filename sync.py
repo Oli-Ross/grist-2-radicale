@@ -1,4 +1,5 @@
 from typing import List
+import logging
 from env import RADICALE_ALT_URL
 from events import Event, get_current_events
 from radicale import get_calendar
@@ -31,14 +32,19 @@ def sync_grist_to_radicale():
     cal_alt = get_calendar(url=RADICALE_ALT_URL)
 
     radicale_events = get_events_radicale(cal)
+    logging.info("Deleting old events.")
     for e in radicale_events:
         e.remove_from_calendar(cal)
         e.remove_from_calendar(cal_alt)
 
+    logging.info("Getting new events.")
     current_events = get_current_events(get_events_grist())
+
+    logging.info("Adding new events to main cal.")
     for e in current_events:
         e.add_to_calendar(cal)
 
+    logging.info("Adding new events to alt cal.")
     merged_events = process_events(current_events)
     for e in merged_events:
         e.add_to_calendar(cal_alt)
