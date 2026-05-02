@@ -7,7 +7,7 @@ from radicale import get_events as get_events_radicale
 from grist import get_events as get_events_grist
 
 
-def process_events(events: List[Event]) -> List[Event]:
+def merge_events(events: List[Event]) -> List[Event]:
     events = sorted(events, key=lambda e: (e.start, e.end, e.summary))
     merged: List[Event] = []
 
@@ -40,13 +40,14 @@ def sync_grist_to_radicale():
         e.remove_from_calendar(cal_alt)
 
     logging.info("Getting new events.")
-    current_events = get_current_events(get_events_grist())
+    grist_events = get_events_grist()
+    current_events = get_current_events(grist_events)
+    merged_events = merge_events(current_events)
 
     logging.info("Adding new events to main cal.")
-    for e in current_events:
+    for e in merged_events:
         e.add_to_calendar(cal)
 
     logging.info("Adding new events to alt cal.")
-    merged_events = process_events(current_events)
     for e in merged_events:
         e.add_to_calendar(cal_alt)
